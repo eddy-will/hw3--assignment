@@ -1,0 +1,6 @@
+c_list
+c_list.exe
+*.o
+*.zip
+.DS_Store
+__pycache__/

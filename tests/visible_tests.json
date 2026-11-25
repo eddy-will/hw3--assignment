@@ -1,0 +1,922 @@
+{
+  "assignment_id": "c_list",
+  "executable": "c_list",
+  "required": [
+    "c_list.c"
+  ],
+  "zip_name": "{assignment_id}_{student_id}.zip",
+  "form_url": "https://forms.gle/Wkqw2vfQZwamEJBV6",
+  "compile": {
+    "compiler": "gcc",
+    "flags": [
+      "-std=c11",
+      "-Wall",
+      "-Wextra",
+      "-g",
+      "-Werror"
+    ],
+    "sources": [
+      "driver.c"
+    ],
+    "ldlibs": []
+  },
+  "hidden_count": 0,
+  "tests": [
+    {
+      "id": "create_basic",
+      "description": "list_create: returns a new, empty list allocated with malloc",
+      "args": [],
+      "stdin": "create\n",
+      "expected": "list_create -> returned a new list\nlist: [] (size 0)\nmemory: OK (every allocation freed exactly once)\n",
+      "expected_exit": 0,
+      "compare": "exact",
+      "compare_options": {
+        "abs_tol": null,
+        "rel_tol": null,
+        "decimals": "match"
+      },
+      "timeout": 6.0,
+      "hint": null
+    },
+    {
+      "id": "destroy_empty",
+      "description": "list_destroy: frees an empty list",
+      "args": [],
+      "stdin": "build\ndestroy\n",
+      "expected": "start: [] (size 0)\nlist_destroy -> done\nmemory: OK (every allocation freed exactly once)\n",
+      "expected_exit": 0,
+      "compare": "exact",
+      "compare_options": {
+        "abs_tol": null,
+        "rel_tol": null,
+        "decimals": "match"
+      },
+      "timeout": 6.0,
+      "hint": null
+    },
+    {
+      "id": "destroy_one",
+      "description": "list_destroy: frees a one-node list",
+      "args": [],
+      "stdin": "build 4\ndestroy\n",
+      "expected": "start: [4] (size 1)\nlist_destroy -> done\nmemory: OK (every allocation freed exactly once)\n",
+      "expected_exit": 0,
+      "compare": "exact",
+      "compare_options": {
+        "abs_tol": null,
+        "rel_tol": null,
+        "decimals": "match"
+      },
+      "timeout": 6.0,
+      "hint": null
+    },
+    {
+      "id": "destroy_three",
+      "description": "list_destroy: frees every node and the list",
+      "args": [],
+      "stdin": "build 3 7 5\ndestroy\n",
+      "expected": "start: [3 7 5] (size 3)\nlist_destroy -> done\nmemory: OK (every allocation freed exactly once)\n",
+      "expected_exit": 0,
+      "compare": "exact",
+      "compare_options": {
+        "abs_tol": null,
+        "rel_tol": null,
+        "decimals": "match"
+      },
+      "timeout": 6.0,
+      "hint": null
+    },
+    {
+      "id": "destroy_long",
+      "description": "list_destroy: frees a 20-node list",
+      "args": [],
+      "stdin": "build 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20\ndestroy\n",
+      "expected": "start: [1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20] (size 20)\nlist_destroy -> done\nmemory: OK (every allocation freed exactly once)\n",
+      "expected_exit": 0,
+      "compare": "exact",
+      "compare_options": {
+        "abs_tol": null,
+        "rel_tol": null,
+        "decimals": "match"
+      },
+      "timeout": 6.0,
+      "hint": null
+    },
+    {
+      "id": "destroy_created",
+      "description": "list_destroy: frees a list made by list_create",
+      "args": [],
+      "stdin": "create\ndestroy\n",
+      "expected": "list_create -> returned a new list\nlist: [] (size 0)\nlist_destroy -> done\nmemory: OK (every allocation freed exactly once)\n",
+      "expected_exit": 0,
+      "compare": "exact",
+      "compare_options": {
+        "abs_tol": null,
+        "rel_tol": null,
+        "decimals": "match"
+      },
+      "timeout": 6.0,
+      "hint": null
+    },
+    {
+      "id": "push_front_basic",
+      "description": "list_push_front: adds at the front",
+      "args": [],
+      "stdin": "build 3 7\npush_front 1\n",
+      "expected": "start: [3 7] (size 2)\npush_front 1 -> returns 0\nlist: [1 3 7] (size 3)\nmemory: OK (every allocation freed exactly once)\n",
+      "expected_exit": 0,
+      "compare": "exact",
+      "compare_options": {
+        "abs_tol": null,
+        "rel_tol": null,
+        "decimals": "match"
+      },
+      "timeout": 6.0,
+      "hint": null
+    },
+    {
+      "id": "push_front_empty",
+      "description": "list_push_front: adds to an empty list",
+      "args": [],
+      "stdin": "build\npush_front 1\n",
+      "expected": "start: [] (size 0)\npush_front 1 -> returns 0\nlist: [1] (size 1)\nmemory: OK (every allocation freed exactly once)\n",
+      "expected_exit": 0,
+      "compare": "exact",
+      "compare_options": {
+        "abs_tol": null,
+        "rel_tol": null,
+        "decimals": "match"
+      },
+      "timeout": 6.0,
+      "hint": null
+    },
+    {
+      "id": "push_front_many",
+      "description": "list_push_front: several pushes in a row",
+      "args": [],
+      "stdin": "build\npush_front 1\npush_front 2\npush_front 3\n",
+      "expected": "start: [] (size 0)\npush_front 1 -> returns 0\nlist: [1] (size 1)\npush_front 2 -> returns 0\nlist: [2 1] (size 2)\npush_front 3 -> returns 0\nlist: [3 2 1] (size 3)\nmemory: OK (every allocation freed exactly once)\n",
+      "expected_exit": 0,
+      "compare": "exact",
+      "compare_options": {
+        "abs_tol": null,
+        "rel_tol": null,
+        "decimals": "match"
+      },
+      "timeout": 6.0,
+      "hint": null
+    },
+    {
+      "id": "push_front_values",
+      "description": "list_push_front: negative and zero values",
+      "args": [],
+      "stdin": "build 5\npush_front -8\npush_front 0\n",
+      "expected": "start: [5] (size 1)\npush_front -8 -> returns 0\nlist: [-8 5] (size 2)\npush_front 0 -> returns 0\nlist: [0 -8 5] (size 3)\nmemory: OK (every allocation freed exactly once)\n",
+      "expected_exit": 0,
+      "compare": "exact",
+      "compare_options": {
+        "abs_tol": null,
+        "rel_tol": null,
+        "decimals": "match"
+      },
+      "timeout": 6.0,
+      "hint": null
+    },
+    {
+      "id": "push_front_long",
+      "description": "list_push_front: adds to a long list",
+      "args": [],
+      "stdin": "build 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20\npush_front 0\n",
+      "expected": "start: [1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20] (size 20)\npush_front 0 -> returns 0\nlist: [0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20] (size 21)\nmemory: OK (every allocation freed exactly once)\n",
+      "expected_exit": 0,
+      "compare": "exact",
+      "compare_options": {
+        "abs_tol": null,
+        "rel_tol": null,
+        "decimals": "match"
+      },
+      "timeout": 6.0,
+      "hint": null
+    },
+    {
+      "id": "push_back_basic",
+      "description": "list_push_back: adds at the end",
+      "args": [],
+      "stdin": "build 3 7\npush_back 1\n",
+      "expected": "start: [3 7] (size 2)\npush_back 1 -> returns 0\nlist: [3 7 1] (size 3)\nmemory: OK (every allocation freed exactly once)\n",
+      "expected_exit": 0,
+      "compare": "exact",
+      "compare_options": {
+        "abs_tol": null,
+        "rel_tol": null,
+        "decimals": "match"
+      },
+      "timeout": 6.0,
+      "hint": null
+    },
+    {
+      "id": "push_back_empty",
+      "description": "list_push_back: adds to an empty list (new node is the head)",
+      "args": [],
+      "stdin": "build\npush_back 1\n",
+      "expected": "start: [] (size 0)\npush_back 1 -> returns 0\nlist: [1] (size 1)\nmemory: OK (every allocation freed exactly once)\n",
+      "expected_exit": 0,
+      "compare": "exact",
+      "compare_options": {
+        "abs_tol": null,
+        "rel_tol": null,
+        "decimals": "match"
+      },
+      "timeout": 6.0,
+      "hint": null
+    },
+    {
+      "id": "push_back_one",
+      "description": "list_push_back: adds after a single node",
+      "args": [],
+      "stdin": "build 4\npush_back 9\n",
+      "expected": "start: [4] (size 1)\npush_back 9 -> returns 0\nlist: [4 9] (size 2)\nmemory: OK (every allocation freed exactly once)\n",
+      "expected_exit": 0,
+      "compare": "exact",
+      "compare_options": {
+        "abs_tol": null,
+        "rel_tol": null,
+        "decimals": "match"
+      },
+      "timeout": 6.0,
+      "hint": null
+    },
+    {
+      "id": "push_back_many",
+      "description": "list_push_back: several pushes in a row",
+      "args": [],
+      "stdin": "build\npush_back 1\npush_back 2\npush_back 3\n",
+      "expected": "start: [] (size 0)\npush_back 1 -> returns 0\nlist: [1] (size 1)\npush_back 2 -> returns 0\nlist: [1 2] (size 2)\npush_back 3 -> returns 0\nlist: [1 2 3] (size 3)\nmemory: OK (every allocation freed exactly once)\n",
+      "expected_exit": 0,
+      "compare": "exact",
+      "compare_options": {
+        "abs_tol": null,
+        "rel_tol": null,
+        "decimals": "match"
+      },
+      "timeout": 6.0,
+      "hint": null
+    },
+    {
+      "id": "push_back_values",
+      "description": "list_push_back: negative and zero values",
+      "args": [],
+      "stdin": "build 5\npush_back -8\npush_back 0\n",
+      "expected": "start: [5] (size 1)\npush_back -8 -> returns 0\nlist: [5 -8] (size 2)\npush_back 0 -> returns 0\nlist: [5 -8 0] (size 3)\nmemory: OK (every allocation freed exactly once)\n",
+      "expected_exit": 0,
+      "compare": "exact",
+      "compare_options": {
+        "abs_tol": null,
+        "rel_tol": null,
+        "decimals": "match"
+      },
+      "timeout": 6.0,
+      "hint": null
+    },
+    {
+      "id": "push_back_long",
+      "description": "list_push_back: adds to a long list",
+      "args": [],
+      "stdin": "build 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20\npush_back 21\n",
+      "expected": "start: [1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20] (size 20)\npush_back 21 -> returns 0\nlist: [1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21] (size 21)\nmemory: OK (every allocation freed exactly once)\n",
+      "expected_exit": 0,
+      "compare": "exact",
+      "compare_options": {
+        "abs_tol": null,
+        "rel_tol": null,
+        "decimals": "match"
+      },
+      "timeout": 6.0,
+      "hint": null
+    },
+    {
+      "id": "get_middle",
+      "description": "list_get: reads a middle value",
+      "args": [],
+      "stdin": "build 3 7 5\nget 1\n",
+      "expected": "start: [3 7 5] (size 3)\nget 1 -> returns 0, out = 7\nlist: [3 7 5] (size 3)\nmemory: OK (every allocation freed exactly once)\n",
+      "expected_exit": 0,
+      "compare": "exact",
+      "compare_options": {
+        "abs_tol": null,
+        "rel_tol": null,
+        "decimals": "match"
+      },
+      "timeout": 6.0,
+      "hint": null
+    },
+    {
+      "id": "get_first",
+      "description": "list_get: reads index 0",
+      "args": [],
+      "stdin": "build 3 7 5\nget 0\n",
+      "expected": "start: [3 7 5] (size 3)\nget 0 -> returns 0, out = 3\nlist: [3 7 5] (size 3)\nmemory: OK (every allocation freed exactly once)\n",
+      "expected_exit": 0,
+      "compare": "exact",
+      "compare_options": {
+        "abs_tol": null,
+        "rel_tol": null,
+        "decimals": "match"
+      },
+      "timeout": 6.0,
+      "hint": null
+    },
+    {
+      "id": "get_last",
+      "description": "list_get: reads the last node",
+      "args": [],
+      "stdin": "build 3 7 5\nget 2\n",
+      "expected": "start: [3 7 5] (size 3)\nget 2 -> returns 0, out = 5\nlist: [3 7 5] (size 3)\nmemory: OK (every allocation freed exactly once)\n",
+      "expected_exit": 0,
+      "compare": "exact",
+      "compare_options": {
+        "abs_tol": null,
+        "rel_tol": null,
+        "decimals": "match"
+      },
+      "timeout": 6.0,
+      "hint": null
+    },
+    {
+      "id": "get_at_size",
+      "description": "list_get: the last index works, index == size fails",
+      "args": [],
+      "stdin": "build 3 7 5\nget 2\nget 3\n",
+      "expected": "start: [3 7 5] (size 3)\nget 2 -> returns 0, out = 5\nlist: [3 7 5] (size 3)\nget 3 -> returns -1, out unchanged\nlist: [3 7 5] (size 3)\nmemory: OK (every allocation freed exactly once)\n",
+      "expected_exit": 0,
+      "compare": "exact",
+      "compare_options": {
+        "abs_tol": null,
+        "rel_tol": null,
+        "decimals": "match"
+      },
+      "timeout": 6.0,
+      "hint": null
+    },
+    {
+      "id": "get_far",
+      "description": "list_get: an index far past the end fails",
+      "args": [],
+      "stdin": "build 3 7 5\nget 0\nget 100\n",
+      "expected": "start: [3 7 5] (size 3)\nget 0 -> returns 0, out = 3\nlist: [3 7 5] (size 3)\nget 100 -> returns -1, out unchanged\nlist: [3 7 5] (size 3)\nmemory: OK (every allocation freed exactly once)\n",
+      "expected_exit": 0,
+      "compare": "exact",
+      "compare_options": {
+        "abs_tol": null,
+        "rel_tol": null,
+        "decimals": "match"
+      },
+      "timeout": 6.0,
+      "hint": null
+    },
+    {
+      "id": "get_empty",
+      "description": "list_get: any index on an empty list fails",
+      "args": [],
+      "stdin": "build\nget 0\n",
+      "expected": "start: [] (size 0)\nget 0 -> returns -1, out unchanged\nlist: [] (size 0)\nmemory: OK (every allocation freed exactly once)\n",
+      "expected_exit": 0,
+      "compare": "exact",
+      "compare_options": {
+        "abs_tol": null,
+        "rel_tol": null,
+        "decimals": "match"
+      },
+      "timeout": 6.0,
+      "hint": null
+    },
+    {
+      "id": "get_every",
+      "description": "list_get: reads every position in turn",
+      "args": [],
+      "stdin": "build 10 20 30 40 50\nget 0\nget 1\nget 2\nget 3\nget 4\nget 5\n",
+      "expected": "start: [10 20 30 40 50] (size 5)\nget 0 -> returns 0, out = 10\nlist: [10 20 30 40 50] (size 5)\nget 1 -> returns 0, out = 20\nlist: [10 20 30 40 50] (size 5)\nget 2 -> returns 0, out = 30\nlist: [10 20 30 40 50] (size 5)\nget 3 -> returns 0, out = 40\nlist: [10 20 30 40 50] (size 5)\nget 4 -> returns 0, out = 50\nlist: [10 20 30 40 50] (size 5)\nget 5 -> returns -1, out unchanged\nlist: [10 20 30 40 50] (size 5)\nmemory: OK (every allocation freed exactly once)\n",
+      "expected_exit": 0,
+      "compare": "exact",
+      "compare_options": {
+        "abs_tol": null,
+        "rel_tol": null,
+        "decimals": "match"
+      },
+      "timeout": 6.0,
+      "hint": null
+    },
+    {
+      "id": "get_negative_value",
+      "description": "list_get: reads negative values",
+      "args": [],
+      "stdin": "build -1 -2\nget 1\n",
+      "expected": "start: [-1 -2] (size 2)\nget 1 -> returns 0, out = -2\nlist: [-1 -2] (size 2)\nmemory: OK (every allocation freed exactly once)\n",
+      "expected_exit": 0,
+      "compare": "exact",
+      "compare_options": {
+        "abs_tol": null,
+        "rel_tol": null,
+        "decimals": "match"
+      },
+      "timeout": 6.0,
+      "hint": null
+    },
+    {
+      "id": "pop_front_basic",
+      "description": "list_pop_front: removes the head",
+      "args": [],
+      "stdin": "build 3 7 5\npop_front\n",
+      "expected": "start: [3 7 5] (size 3)\npop_front -> returns 0, out = 3\nlist: [7 5] (size 2)\nmemory: OK (every allocation freed exactly once)\n",
+      "expected_exit": 0,
+      "compare": "exact",
+      "compare_options": {
+        "abs_tol": null,
+        "rel_tol": null,
+        "decimals": "match"
+      },
+      "timeout": 6.0,
+      "hint": null
+    },
+    {
+      "id": "pop_front_single",
+      "description": "list_pop_front: removing the only node empties the list",
+      "args": [],
+      "stdin": "build 3\npop_front\n",
+      "expected": "start: [3] (size 1)\npop_front -> returns 0, out = 3\nlist: [] (size 0)\nmemory: OK (every allocation freed exactly once)\n",
+      "expected_exit": 0,
+      "compare": "exact",
+      "compare_options": {
+        "abs_tol": null,
+        "rel_tol": null,
+        "decimals": "match"
+      },
+      "timeout": 6.0,
+      "hint": null
+    },
+    {
+      "id": "pop_front_empty",
+      "description": "list_pop_front: fails on an empty list",
+      "args": [],
+      "stdin": "build\npop_front\n",
+      "expected": "start: [] (size 0)\npop_front -> returns -1, out unchanged\nlist: [] (size 0)\nmemory: OK (every allocation freed exactly once)\n",
+      "expected_exit": 0,
+      "compare": "exact",
+      "compare_options": {
+        "abs_tol": null,
+        "rel_tol": null,
+        "decimals": "match"
+      },
+      "timeout": 6.0,
+      "hint": null
+    },
+    {
+      "id": "pop_front_all",
+      "description": "list_pop_front: pops until empty, then one more",
+      "args": [],
+      "stdin": "build 3 7 5\npop_front\npop_front\npop_front\npop_front\n",
+      "expected": "start: [3 7 5] (size 3)\npop_front -> returns 0, out = 3\nlist: [7 5] (size 2)\npop_front -> returns 0, out = 7\nlist: [5] (size 1)\npop_front -> returns 0, out = 5\nlist: [] (size 0)\npop_front -> returns -1, out unchanged\nlist: [] (size 0)\nmemory: OK (every allocation freed exactly once)\n",
+      "expected_exit": 0,
+      "compare": "exact",
+      "compare_options": {
+        "abs_tol": null,
+        "rel_tol": null,
+        "decimals": "match"
+      },
+      "timeout": 6.0,
+      "hint": null
+    },
+    {
+      "id": "pop_front_negative",
+      "description": "list_pop_front: pops a negative value",
+      "args": [],
+      "stdin": "build -4 6\npop_front\n",
+      "expected": "start: [-4 6] (size 2)\npop_front -> returns 0, out = -4\nlist: [6] (size 1)\nmemory: OK (every allocation freed exactly once)\n",
+      "expected_exit": 0,
+      "compare": "exact",
+      "compare_options": {
+        "abs_tol": null,
+        "rel_tol": null,
+        "decimals": "match"
+      },
+      "timeout": 6.0,
+      "hint": null
+    },
+    {
+      "id": "insert_at_middle",
+      "description": "list_insert_at: inserts in the middle",
+      "args": [],
+      "stdin": "build 3 7 5\ninsert_at 1 9\n",
+      "expected": "start: [3 7 5] (size 3)\ninsert_at 1 9 -> returns 0\nlist: [3 9 7 5] (size 4)\nmemory: OK (every allocation freed exactly once)\n",
+      "expected_exit": 0,
+      "compare": "exact",
+      "compare_options": {
+        "abs_tol": null,
+        "rel_tol": null,
+        "decimals": "match"
+      },
+      "timeout": 6.0,
+      "hint": null
+    },
+    {
+      "id": "insert_at_head",
+      "description": "list_insert_at: index 0 makes a new head",
+      "args": [],
+      "stdin": "build 3 7 5\ninsert_at 0 9\n",
+      "expected": "start: [3 7 5] (size 3)\ninsert_at 0 9 -> returns 0\nlist: [9 3 7 5] (size 4)\nmemory: OK (every allocation freed exactly once)\n",
+      "expected_exit": 0,
+      "compare": "exact",
+      "compare_options": {
+        "abs_tol": null,
+        "rel_tol": null,
+        "decimals": "match"
+      },
+      "timeout": 6.0,
+      "hint": null
+    },
+    {
+      "id": "insert_at_end",
+      "description": "list_insert_at: index == size adds at the end",
+      "args": [],
+      "stdin": "build 3 7 5\ninsert_at 3 9\n",
+      "expected": "start: [3 7 5] (size 3)\ninsert_at 3 9 -> returns 0\nlist: [3 7 5 9] (size 4)\nmemory: OK (every allocation freed exactly once)\n",
+      "expected_exit": 0,
+      "compare": "exact",
+      "compare_options": {
+        "abs_tol": null,
+        "rel_tol": null,
+        "decimals": "match"
+      },
+      "timeout": 6.0,
+      "hint": null
+    },
+    {
+      "id": "insert_at_empty",
+      "description": "list_insert_at: index 0 on an empty list",
+      "args": [],
+      "stdin": "build\ninsert_at 0 9\n",
+      "expected": "start: [] (size 0)\ninsert_at 0 9 -> returns 0\nlist: [9] (size 1)\nmemory: OK (every allocation freed exactly once)\n",
+      "expected_exit": 0,
+      "compare": "exact",
+      "compare_options": {
+        "abs_tol": null,
+        "rel_tol": null,
+        "decimals": "match"
+      },
+      "timeout": 6.0,
+      "hint": null
+    },
+    {
+      "id": "insert_at_past_end",
+      "description": "list_insert_at: index == size works, index size + 1 fails",
+      "args": [],
+      "stdin": "build 3 7 5\ninsert_at 3 8\ninsert_at 5 9\n",
+      "expected": "start: [3 7 5] (size 3)\ninsert_at 3 8 -> returns 0\nlist: [3 7 5 8] (size 4)\ninsert_at 5 9 -> returns -1\nlist: [3 7 5 8] (size 4)\nmemory: OK (every allocation freed exactly once)\n",
+      "expected_exit": 0,
+      "compare": "exact",
+      "compare_options": {
+        "abs_tol": null,
+        "rel_tol": null,
+        "decimals": "match"
+      },
+      "timeout": 6.0,
+      "hint": null
+    },
+    {
+      "id": "insert_at_empty_bad",
+      "description": "list_insert_at: index 1 on an empty list fails, then index 0 works",
+      "args": [],
+      "stdin": "build\ninsert_at 1 9\ninsert_at 0 9\n",
+      "expected": "start: [] (size 0)\ninsert_at 1 9 -> returns -1\nlist: [] (size 0)\ninsert_at 0 9 -> returns 0\nlist: [9] (size 1)\nmemory: OK (every allocation freed exactly once)\n",
+      "expected_exit": 0,
+      "compare": "exact",
+      "compare_options": {
+        "abs_tol": null,
+        "rel_tol": null,
+        "decimals": "match"
+      },
+      "timeout": 6.0,
+      "hint": null
+    },
+    {
+      "id": "insert_at_far",
+      "description": "list_insert_at: an index far past the end fails, then a valid one works",
+      "args": [],
+      "stdin": "build 3 7 5\ninsert_at 100 9\ninsert_at 1 8\n",
+      "expected": "start: [3 7 5] (size 3)\ninsert_at 100 9 -> returns -1\nlist: [3 7 5] (size 3)\ninsert_at 1 8 -> returns 0\nlist: [3 8 7 5] (size 4)\nmemory: OK (every allocation freed exactly once)\n",
+      "expected_exit": 0,
+      "compare": "exact",
+      "compare_options": {
+        "abs_tol": null,
+        "rel_tol": null,
+        "decimals": "match"
+      },
+      "timeout": 6.0,
+      "hint": null
+    },
+    {
+      "id": "insert_at_single",
+      "description": "list_insert_at: between head and nothing: index 1 of a one-node list",
+      "args": [],
+      "stdin": "build 4\ninsert_at 1 9\n",
+      "expected": "start: [4] (size 1)\ninsert_at 1 9 -> returns 0\nlist: [4 9] (size 2)\nmemory: OK (every allocation freed exactly once)\n",
+      "expected_exit": 0,
+      "compare": "exact",
+      "compare_options": {
+        "abs_tol": null,
+        "rel_tol": null,
+        "decimals": "match"
+      },
+      "timeout": 6.0,
+      "hint": null
+    },
+    {
+      "id": "insert_at_sequence",
+      "description": "list_insert_at: builds a list with inserts at varied positions",
+      "args": [],
+      "stdin": "build\ninsert_at 0 2\ninsert_at 0 1\ninsert_at 2 4\ninsert_at 2 3\n",
+      "expected": "start: [] (size 0)\ninsert_at 0 2 -> returns 0\nlist: [2] (size 1)\ninsert_at 0 1 -> returns 0\nlist: [1 2] (size 2)\ninsert_at 2 4 -> returns 0\nlist: [1 2 4] (size 3)\ninsert_at 2 3 -> returns 0\nlist: [1 2 3 4] (size 4)\nmemory: OK (every allocation freed exactly once)\n",
+      "expected_exit": 0,
+      "compare": "exact",
+      "compare_options": {
+        "abs_tol": null,
+        "rel_tol": null,
+        "decimals": "match"
+      },
+      "timeout": 6.0,
+      "hint": null
+    },
+    {
+      "id": "insert_at_second_last",
+      "description": "list_insert_at: inserts just before the last node",
+      "args": [],
+      "stdin": "build 1 2 3 4 5 6 7 8 9 10\ninsert_at 9 99\n",
+      "expected": "start: [1 2 3 4 5 6 7 8 9 10] (size 10)\ninsert_at 9 99 -> returns 0\nlist: [1 2 3 4 5 6 7 8 9 99 10] (size 11)\nmemory: OK (every allocation freed exactly once)\n",
+      "expected_exit": 0,
+      "compare": "exact",
+      "compare_options": {
+        "abs_tol": null,
+        "rel_tol": null,
+        "decimals": "match"
+      },
+      "timeout": 6.0,
+      "hint": null
+    },
+    {
+      "id": "remove_at_middle",
+      "description": "list_remove_at: removes a middle node",
+      "args": [],
+      "stdin": "build 3 7 5\nremove_at 1\n",
+      "expected": "start: [3 7 5] (size 3)\nremove_at 1 -> returns 0, out = 7\nlist: [3 5] (size 2)\nmemory: OK (every allocation freed exactly once)\n",
+      "expected_exit": 0,
+      "compare": "exact",
+      "compare_options": {
+        "abs_tol": null,
+        "rel_tol": null,
+        "decimals": "match"
+      },
+      "timeout": 6.0,
+      "hint": null
+    },
+    {
+      "id": "remove_at_head",
+      "description": "list_remove_at: index 0 removes the head",
+      "args": [],
+      "stdin": "build 3 7 5\nremove_at 0\n",
+      "expected": "start: [3 7 5] (size 3)\nremove_at 0 -> returns 0, out = 3\nlist: [7 5] (size 2)\nmemory: OK (every allocation freed exactly once)\n",
+      "expected_exit": 0,
+      "compare": "exact",
+      "compare_options": {
+        "abs_tol": null,
+        "rel_tol": null,
+        "decimals": "match"
+      },
+      "timeout": 6.0,
+      "hint": null
+    },
+    {
+      "id": "remove_at_last",
+      "description": "list_remove_at: removes the last node",
+      "args": [],
+      "stdin": "build 3 7 5\nremove_at 2\n",
+      "expected": "start: [3 7 5] (size 3)\nremove_at 2 -> returns 0, out = 5\nlist: [3 7] (size 2)\nmemory: OK (every allocation freed exactly once)\n",
+      "expected_exit": 0,
+      "compare": "exact",
+      "compare_options": {
+        "abs_tol": null,
+        "rel_tol": null,
+        "decimals": "match"
+      },
+      "timeout": 6.0,
+      "hint": null
+    },
+    {
+      "id": "remove_at_single",
+      "description": "list_remove_at: removing the only node empties the list",
+      "args": [],
+      "stdin": "build 3\nremove_at 0\n",
+      "expected": "start: [3] (size 1)\nremove_at 0 -> returns 0, out = 3\nlist: [] (size 0)\nmemory: OK (every allocation freed exactly once)\n",
+      "expected_exit": 0,
+      "compare": "exact",
+      "compare_options": {
+        "abs_tol": null,
+        "rel_tol": null,
+        "decimals": "match"
+      },
+      "timeout": 6.0,
+      "hint": null
+    },
+    {
+      "id": "remove_at_at_size",
+      "description": "list_remove_at: index == size fails, then the last index works",
+      "args": [],
+      "stdin": "build 3 7 5\nremove_at 3\nremove_at 2\n",
+      "expected": "start: [3 7 5] (size 3)\nremove_at 3 -> returns -1, out unchanged\nlist: [3 7 5] (size 3)\nremove_at 2 -> returns 0, out = 5\nlist: [3 7] (size 2)\nmemory: OK (every allocation freed exactly once)\n",
+      "expected_exit": 0,
+      "compare": "exact",
+      "compare_options": {
+        "abs_tol": null,
+        "rel_tol": null,
+        "decimals": "match"
+      },
+      "timeout": 6.0,
+      "hint": null
+    },
+    {
+      "id": "remove_at_empty",
+      "description": "list_remove_at: fails on an empty list",
+      "args": [],
+      "stdin": "build\nremove_at 0\n",
+      "expected": "start: [] (size 0)\nremove_at 0 -> returns -1, out unchanged\nlist: [] (size 0)\nmemory: OK (every allocation freed exactly once)\n",
+      "expected_exit": 0,
+      "compare": "exact",
+      "compare_options": {
+        "abs_tol": null,
+        "rel_tol": null,
+        "decimals": "match"
+      },
+      "timeout": 6.0,
+      "hint": null
+    },
+    {
+      "id": "remove_at_far",
+      "description": "list_remove_at: an index far past the end fails, then index 0 works",
+      "args": [],
+      "stdin": "build 3 7 5\nremove_at 100\nremove_at 0\n",
+      "expected": "start: [3 7 5] (size 3)\nremove_at 100 -> returns -1, out unchanged\nlist: [3 7 5] (size 3)\nremove_at 0 -> returns 0, out = 3\nlist: [7 5] (size 2)\nmemory: OK (every allocation freed exactly once)\n",
+      "expected_exit": 0,
+      "compare": "exact",
+      "compare_options": {
+        "abs_tol": null,
+        "rel_tol": null,
+        "decimals": "match"
+      },
+      "timeout": 6.0,
+      "hint": null
+    },
+    {
+      "id": "remove_at_repeat_middle",
+      "description": "list_remove_at: removes index 1 until it fails",
+      "args": [],
+      "stdin": "build 1 2 3 4\nremove_at 1\nremove_at 1\nremove_at 1\nremove_at 1\n",
+      "expected": "start: [1 2 3 4] (size 4)\nremove_at 1 -> returns 0, out = 2\nlist: [1 3 4] (size 3)\nremove_at 1 -> returns 0, out = 3\nlist: [1 4] (size 2)\nremove_at 1 -> returns 0, out = 4\nlist: [1] (size 1)\nremove_at 1 -> returns -1, out unchanged\nlist: [1] (size 1)\nmemory: OK (every allocation freed exactly once)\n",
+      "expected_exit": 0,
+      "compare": "exact",
+      "compare_options": {
+        "abs_tol": null,
+        "rel_tol": null,
+        "decimals": "match"
+      },
+      "timeout": 6.0,
+      "hint": null
+    },
+    {
+      "id": "remove_at_repeat_last",
+      "description": "list_remove_at: removes the last node until empty",
+      "args": [],
+      "stdin": "build 1 2 3\nremove_at 2\nremove_at 1\nremove_at 0\nremove_at 0\n",
+      "expected": "start: [1 2 3] (size 3)\nremove_at 2 -> returns 0, out = 3\nlist: [1 2] (size 2)\nremove_at 1 -> returns 0, out = 2\nlist: [1] (size 1)\nremove_at 0 -> returns 0, out = 1\nlist: [] (size 0)\nremove_at 0 -> returns -1, out unchanged\nlist: [] (size 0)\nmemory: OK (every allocation freed exactly once)\n",
+      "expected_exit": 0,
+      "compare": "exact",
+      "compare_options": {
+        "abs_tol": null,
+        "rel_tol": null,
+        "decimals": "match"
+      },
+      "timeout": 6.0,
+      "hint": null
+    },
+    {
+      "id": "reverse_three",
+      "description": "list_reverse: reverses three nodes",
+      "args": [],
+      "stdin": "build 3 7 5\nreverse\n",
+      "expected": "start: [3 7 5] (size 3)\nreverse -> done\nlist: [5 7 3] (size 3)\nmemory: OK (every allocation freed exactly once)\n",
+      "expected_exit": 0,
+      "compare": "exact",
+      "compare_options": {
+        "abs_tol": null,
+        "rel_tol": null,
+        "decimals": "match"
+      },
+      "timeout": 6.0,
+      "hint": null
+    },
+    {
+      "id": "reverse_two",
+      "description": "list_reverse: reverses two nodes",
+      "args": [],
+      "stdin": "build 1 2\nreverse\n",
+      "expected": "start: [1 2] (size 2)\nreverse -> done\nlist: [2 1] (size 2)\nmemory: OK (every allocation freed exactly once)\n",
+      "expected_exit": 0,
+      "compare": "exact",
+      "compare_options": {
+        "abs_tol": null,
+        "rel_tol": null,
+        "decimals": "match"
+      },
+      "timeout": 6.0,
+      "hint": null
+    },
+    {
+      "id": "reverse_one",
+      "description": "list_reverse: a one-node list is unchanged",
+      "args": [],
+      "stdin": "build 4\nreverse\n",
+      "expected": "start: [4] (size 1)\nreverse -> done\nlist: [4] (size 1)\nmemory: OK (every allocation freed exactly once)\n",
+      "expected_exit": 0,
+      "compare": "exact",
+      "compare_options": {
+        "abs_tol": null,
+        "rel_tol": null,
+        "decimals": "match"
+      },
+      "timeout": 6.0,
+      "hint": null
+    },
+    {
+      "id": "reverse_empty",
+      "description": "list_reverse: an empty list is unchanged",
+      "args": [],
+      "stdin": "build\nreverse\n",
+      "expected": "start: [] (size 0)\nreverse -> done\nlist: [] (size 0)\nmemory: OK (every allocation freed exactly once)\n",
+      "expected_exit": 0,
+      "compare": "exact",
+      "compare_options": {
+        "abs_tol": null,
+        "rel_tol": null,
+        "decimals": "match"
+      },
+      "timeout": 6.0,
+      "hint": null
+    },
+    {
+      "id": "reverse_long",
+      "description": "list_reverse: reverses a 20-node list",
+      "args": [],
+      "stdin": "build 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20\nreverse\n",
+      "expected": "start: [1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20] (size 20)\nreverse -> done\nlist: [20 19 18 17 16 15 14 13 12 11 10 9 8 7 6 5 4 3 2 1] (size 20)\nmemory: OK (every allocation freed exactly once)\n",
+      "expected_exit": 0,
+      "compare": "exact",
+      "compare_options": {
+        "abs_tol": null,
+        "rel_tol": null,
+        "decimals": "match"
+      },
+      "timeout": 6.0,
+      "hint": null
+    },
+    {
+      "id": "reverse_twice",
+      "description": "list_reverse: reversing twice restores the order",
+      "args": [],
+      "stdin": "build 1 2 3 4 5\nreverse\nreverse\n",
+      "expected": "start: [1 2 3 4 5] (size 5)\nreverse -> done\nlist: [5 4 3 2 1] (size 5)\nreverse -> done\nlist: [1 2 3 4 5] (size 5)\nmemory: OK (every allocation freed exactly once)\n",
+      "expected_exit": 0,
+      "compare": "exact",
+      "compare_options": {
+        "abs_tol": null,
+        "rel_tol": null,
+        "decimals": "match"
+      },
+      "timeout": 6.0,
+      "hint": null
+    },
+    {
+      "id": "reverse_duplicates",
+      "description": "list_reverse: relinks nodes even when values repeat",
+      "args": [],
+      "stdin": "build 1 1 2 2\nreverse\n",
+      "expected": "start: [1 1 2 2] (size 4)\nreverse -> done\nlist: [2 2 1 1] (size 4)\nmemory: OK (every allocation freed exactly once)\n",
+      "expected_exit": 0,
+      "compare": "exact",
+      "compare_options": {
+        "abs_tol": null,
+        "rel_tol": null,
+        "decimals": "match"
+      },
+      "timeout": 6.0,
+      "hint": null
+    }
+  ]
+}
